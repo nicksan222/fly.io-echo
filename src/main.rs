@@ -1,11 +1,11 @@
 use std::io::{self, BufRead};
 
-use packet_init::write_to_stdout;
-use packet_init::Body;
-use packet_init::Message;
+use packet::write_to_stdout;
+use packet::Body;
+use packet::Message;
 use tokio;
 
-mod packet_init;
+mod packet;
 
 #[tokio::main]
 async fn main() {
