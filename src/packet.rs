@@ -2,7 +2,7 @@ use std::io::Write;
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum Body {
     #[serde(rename = "init")]
@@ -13,14 +13,22 @@ pub enum Body {
     },
     #[serde(rename = "init_ok")]
     InitOk { in_reply_to: u64 },
-    #[serde(rename = "echo")]
-    Echo { msg_id: u64, echo: String },
-    #[serde(rename = "echo_ok")]
-    EchoOk {
+    #[serde(rename = "broadcast")]
+    Broadcast { msg_id: u64, message: u64 },
+    #[serde(rename = "broadcast_ok")]
+    BroadcastOk { msg_id: u64, in_reply_to: u64 },
+    #[serde(rename = "read")]
+    Read { msg_id: u64 },
+    #[serde(rename = "read_ok")]
+    ReadOk {
         msg_id: u64,
+        messages: Vec<u64>,
         in_reply_to: u64,
-        echo: String,
     },
+    #[serde(rename = "topology")]
+    Topology { msg_id: u64 },
+    #[serde(rename = "topology_ok")]
+    TopologyOk { msg_id: u64, in_reply_to: u64 },
     #[serde(rename = "error")]
     Error {
         in_reply_to: u64,
@@ -29,7 +37,7 @@ pub enum Body {
     },
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Message {
     pub src: String,
     pub dest: String,
